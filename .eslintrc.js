@@ -18,6 +18,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'react'],
   rules: {
     // Add your custom rules here
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'react/react-in-jsx-scope': 'off',
   },
   settings: {
     react: {
