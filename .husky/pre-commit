@@ -1,42 +1,41 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo '🏗️👷 Styling, testing and building your project before committing'
+echo '🚧✨ Preparing your code for greatness: formatting, linting, and building before commit 🚧✨'
 
 # Check Prettier standards
 npm run check-format ||
 (
-    echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
-            Prettier Check Failed. Run npm run format, add changes and try commit again.';
+    echo '🚨 Oops! Code formatting is out of alignment. 🚨 
+            Prettier check failed. Run `npm run format`, make the changes, and try committing again.'
     false;
 )
 
-# Check ESLint Standards
+# Check ESLint standards
 npm run check-lint ||
 (
-        echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤 
-                ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
-        false; 
+    echo '🛑 ESLint has flagged some issues. 🛑
+            Please fix the errors listed above, make necessary changes, and try committing again.'
+    false; 
 )
 
-# Check tsconfig standards
+# Check TypeScript standards
 npm run check-types ||
 (
-    echo '🤡😂❌🤡 Failed Type check. 🤡😂❌🤡
-            Are you seriously trying to write that? Make the changes required above.'
+    echo '⚠️ TypeScript type check failed! ⚠️
+            Some type issues need attention before committing. Please review the errors and correct them.'
     false;
 )
 
-# If everything passes... Now we can commit
-echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build now. 🤔🤔🤔🤔'
+# Build the project
+echo '🧐 Everything looks good so far... Let’s ensure it builds properly. 🧐'
 
 npm run build ||
 (
-    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
-            Next build failed: View the errors above to see why. 
-    '
+    echo '❌ Build process failed. ❌ 
+            Please check the errors above and fix them before proceeding.'
     false;
 )
 
 # If everything passes... Now we can commit
-echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'
+echo '✅ All checks passed! Your code is ready for commit. Great job! ✅'
