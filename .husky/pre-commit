@@ -1,19 +1,20 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
 echo '🏗️👷 Styling, testing and building your project before committing'
 
 # Check Prettier standards
 npm run check-format ||
 (
-    echo '🎨 Uh-oh, looks like your styling is a bit off! Time to clean up the mess with npm run format and get that code looking sharp again! 💅';
+    echo '🤢🤮🤢🤮 Its FOKING RAW - Your styling looks disgusting. 🤢🤮🤢🤮
+            Prettier Check Failed. Run npm run format, add changes and try commit again.';
     false;
 )
 
 # Check ESLint Standards
 npm run check-lint ||
 (
-        echo '🏀👋😤Defense! We can not let weak code sneak past!🏀👋😤 
+        echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤 
                 ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
         false; 
 )
@@ -31,10 +32,11 @@ echo '🤔🤔🤔🤔... Alright.... Code looks good to me... Trying to build n
 
 npm run build ||
 (
-    echo '❌🚧 Oh no!,  your build hit a wall! ❌👷🔨 Check errors to find the fix. 🛠️❌❌.'
-    
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
+            Next build failed: View the errors above to see why. 
+    '
     false;
 )
 
 # If everything passes... Now we can commit
-echo '🏆🎉✅ Victory! Your code conquered the challenges. 🎊 Your changes have been successfully committed. 🚀 Keep up the great work! 🌟'npm run lint
+echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'
