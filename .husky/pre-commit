@@ -12,7 +12,7 @@ npm run check-format ||
 )
 
 # Check ESLint standards
-npm run check-lint ||
+npm run check-lint --max-warnings=0 ||
 (
     echo '🛑 ESLint has flagged some issues. 🛑
             Please fix the errors listed above, make necessary changes, and try committing again.'
