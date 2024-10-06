@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": " nvm use 20 && npm run next-dev",
-    "dev-mac": "nvm exec 20 npm run next-dev",
+    "dev-mac": "bash -c 'source ~/.nvm/nvm.sh && nvm exec 20 npm run next-dev'",
     "next-dev": "next dev",
     "build": "next build",
     "start": "next start",
