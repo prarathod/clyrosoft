@@ -1,11 +1,9 @@
-// import Navbar from "./Navbar";
 "use client";
-import HeroSection from "./HeroSection";
+import HeroSection from "../../components/home/HeroSection";
 import Footer from "./Footer";
-import Navbar from "./Navbar";
+import Navbar from "../../components/common/navbar/Navbar";
 
 export default function HomeApp() {
-
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
