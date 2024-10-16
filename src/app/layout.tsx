@@ -32,13 +32,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="system">
-          <main className="flex flex-col min-h-[100vh] justify-between">
-            <div>
-              <Navbar />
+          {/* <main className="flex flex-col min-h-[100vh] justify-between">
+            <div> */}
+              {/* <Navbar /> */}
               {children}
-            </div>
+            {/* </div>
             <Footer />
-          </main>
+          </main> */}
         </ThemeProvider>
       </body>
     </html>
