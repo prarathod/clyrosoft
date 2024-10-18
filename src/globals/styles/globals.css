@@ -76,3 +76,9 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.bg-grid-pattern {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px; /* Adjust the size of the squares */
+}
