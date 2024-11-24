@@ -45,27 +45,27 @@ const StatsInsights = () => {
 
   const images = [
     {
-      url: "/AboutUS/about-us-1.png",
+      url: "/aboutUS/about-us-1.png",
       alt: "Team meeting in modern office",
     },
     {
-      url: "/AboutUS/about-us-2.png",
+      url: "/aboutUS/about-us-2.png",
       alt: "Person working on laptop",
     },
     {
-      url: "/AboutUS/about-us-3.png",
+      url: "/aboutUS/about-us-3.png",
       alt: "Team collaboration",
     },
     {
-      url: "/AboutUS/about-us-4.png",
+      url: "/aboutUS/about-us-4.png",
       alt: "Creative team discussion",
     },
     {
-      url: "/AboutUS/about-us-5.png",
+      url: "/aboutUS/about-us-5.png",
       alt: "Business planning",
     },
     {
-      url: "/AboutUS/about-us-6.png",
+      url: "/aboutUS/about-us-6.png",
       alt: "Modern workplace",
     },
   ];
