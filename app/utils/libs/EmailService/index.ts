@@ -1,6 +1,6 @@
-import { appConfig } from "@/app/AppConfig/appconfig";
-import { ContactFormFieldTypes } from "@/app/Types/type";
 import emailjs from "@emailjs/browser";
+import { appConfig } from "app/appConfig/appconfig";
+import { ContactFormFieldTypes } from "app/utils/types/type";
 
 export const sendEmail = async ({
   fullName,

@@ -7,8 +7,8 @@ import {
   InstagramOutlined,
 } from "@ant-design/icons";
 import { ClrButton } from "../Button/Base";
-import { sendEmail } from "@/app/Service/EmailService";
-import { ContactFormFieldTypes } from "@/app/Types/type";
+import { sendEmail } from "app/utils/libs/EmailService";
+import { ContactFormFieldTypes } from "app/utils/types/type";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;

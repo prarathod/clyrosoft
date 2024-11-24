@@ -72,9 +72,8 @@ export const ScheduleCallModal = ({
 }) => {
   const [form] = Form.useForm();
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async () => {
     try {
-      console.log("Form values:", values);
       form.resetFields();
     } catch (error) {
       console.error("Submission error:", error);

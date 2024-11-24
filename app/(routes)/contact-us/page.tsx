@@ -1,9 +1,9 @@
-import ContactUs from "@/app/components/ContactUs";
+import ContactForm from "app/components/ContactUs";
 
 const page = () => {
   return (
     <>
-      <ContactUs />
+      <ContactForm />
     </>
   );
 };
