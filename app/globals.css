@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* --background: #ffffff;
+  --foreground: #171717; */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* --background: #0a0a0a;
+    --foreground: #ededed; */
+  }
+}
+
+body {
+  /* color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif; */
+}
+
+/* Banner.css */
+.banner-container {
+  background: linear-gradient(45deg, #3f87a6, #ebf8e1); /* Smooth gradient */
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+  color: white;
+  padding: 50px 20px;
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Animation for the gradient */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Animated button hover effect */
+.animated-button {
+  transition: all 0.3s ease;
+}
+
+.animated-button:hover {
+  transform: scale(1.1);
+  background-color: #4e9cda;
+  color: #fff;
+}
+
+/* Optional: Additional styling for icons and text */
+.ant-typography {
+  font-family: "Roboto", sans-serif;
+}
+
+:where(.ant-menu-light.ant-menu-horizontal) > .ant-menu-item::after,
+:where(.ant-menu-light > .ant-menu.ant-menu-horizontal) > .ant-menu-item::after,
+:where(.ant-menu-light.ant-menu-horizontal) > .ant-menu-submenu::after,
+:where(.ant-menu-light > .ant-menu.ant-menu-horizontal)
+  > .ant-menu-submenu::after {
+  inset-inline: 16px !important;
+  bottom: 20px !important;
+  transition: border-color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
