@@ -1,8 +1,14 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export const AnimatedBackground = () => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    // Ensure this runs on the client-side
+    setDimensions({ width: window.innerWidth, height: window.innerHeight });
+  }, []);
   return (
     <div className="absolute inset-0 overflow-hidden">
       <motion.div
@@ -56,17 +62,17 @@ export const AnimatedBackground = () => {
       </svg>
 
       {/* Floating Particles */}
-      {[...Array(20)].map((_, i) => (
+      {Array.from({ length: 10 }).map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-white/10 rounded-full"
           initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
           }}
           animate={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             scale: [1, 1.5, 1],
             opacity: [0.2, 0.5, 0.2],
           }}
