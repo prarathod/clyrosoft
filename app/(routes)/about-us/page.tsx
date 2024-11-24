@@ -1,5 +1,5 @@
-import StatsInsights from "../components/aboutUs/StatAndInsigts";
-import CTASection from "../components/CTASection";
+import StatsInsights from "@/app/components/aboutUs/StatAndInsigts";
+import CTASection from "@/app/components/CTASection";
 
 const page = () => {
   return (

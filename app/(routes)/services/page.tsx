@@ -1,15 +1,15 @@
-import CTASection from "../components/CTASection";
-import ServiceFeatures from "../components/Services/FeaturesSection";
-import RecentWork from "../components/Services/RecentWorks";
-import Testimonial from "../components/Services/Testimonial";
+import CTASection from "@/app/components/CTASection";
+import ServiceFeatures from "@/app/components/Services/FeaturesSection";
+import RecentWork from "@/app/components/Services/RecentWorks";
+import TestimonialCarousel from "@/app/components/Services/Testimonial";
 
 const page = () => {
   return (
     <>
       <ServiceFeatures />
-      <Testimonial />
-      <RecentWork/>
-      <CTASection/>
+      <TestimonialCarousel />
+      <RecentWork />
+      <CTASection />
     </>
   );
 };
