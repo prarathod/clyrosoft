@@ -8,10 +8,9 @@ const handleSearch = () => {
     const escapedSearchTerm = normalizedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
 
-    // Highlight matches and find the first match's position
     let highlighted = '';
     let lastIndex = 0;
-    let firstMatchPosition = null;
+    let firstMatchPosition: number | null = null;
 
     text.replace(regex, (match, _, index) => {
       if (firstMatchPosition === null) {
@@ -32,12 +31,14 @@ const handleSearch = () => {
     if (firstMatchPosition !== null && textContainerRef.current) {
       // Use DOM to scroll to the highlighted match
       setTimeout(() => {
-        const container = textContainerRef.current;
+        const container = textContainerRef.current as HTMLDivElement;
         const highlightedElements = container.querySelectorAll('.highlight');
         if (highlightedElements.length > 0) {
-          const firstMatchElement = highlightedElements[0];
+          const firstMatchElement = highlightedElements[0] as HTMLElement;
           const containerHeight = container.clientHeight;
-          const elementTop = firstMatchElement.offsetTop;
+          const elementTop = firstMatchElement.offsetTop - container.offsetTop;
+
+          // Scroll the container
           container.scrollTop = elementTop - containerHeight / 2;
         }
       }, 0);
