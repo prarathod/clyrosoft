@@ -8,13 +8,15 @@ const handleSearch = () => {
     const escapedSearchTerm = normalizedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
 
+    // Highlight matches and find the first match's position
     let highlighted = '';
     let lastIndex = 0;
-    let firstMatchIndex = null;
+    let firstMatchPosition = null;
 
-    // Highlight text and find the first match position
-    text.replace(regex, (match, group, index) => {
-      if (firstMatchIndex === null) firstMatchIndex = index;
+    text.replace(regex, (match, _, index) => {
+      if (firstMatchPosition === null) {
+        firstMatchPosition = index;
+      }
 
       highlighted += text.slice(lastIndex, index);
       highlighted += `<span class="highlight">${match}</span>`;
@@ -25,25 +27,19 @@ const handleSearch = () => {
 
     highlighted += text.slice(lastIndex);
 
-    // Focus the first match in the container
-    if (firstMatchIndex !== null && textContainerRef.current) {
-      const container = textContainerRef.current;
-
-      // Create a temporary element to measure height
-      const tempDiv = document.createElement('div');
-      tempDiv.style.visibility = 'hidden';
-      tempDiv.style.position = 'absolute';
-      tempDiv.style.whiteSpace = 'pre-wrap';
-      tempDiv.style.lineHeight = '1.5';
-      tempDiv.innerText = text.slice(0, firstMatchIndex);
-
-      document.body.appendChild(tempDiv);
-      const matchOffset = tempDiv.offsetHeight;
-      document.body.removeChild(tempDiv);
-
-      // Scroll to the match and center it
-      container.scrollTop = matchOffset - container.clientHeight / 2;
-    }
-
     setHighlightedText(highlighted || formatText(text));
+
+    if (firstMatchPosition !== null && textContainerRef.current) {
+      // Use DOM to scroll to the highlighted match
+      setTimeout(() => {
+        const container = textContainerRef.current;
+        const highlightedElements = container.querySelectorAll('.highlight');
+        if (highlightedElements.length > 0) {
+          const firstMatchElement = highlightedElements[0];
+          const containerHeight = container.clientHeight;
+          const elementTop = firstMatchElement.offsetTop;
+          container.scrollTop = elementTop - containerHeight / 2;
+        }
+      }, 0);
+    }
   };
