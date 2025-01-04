@@ -24,51 +24,53 @@ const HighlightSearch = () => {
       return;
     }
 
-    // Remove line breaks and extra spaces from both text and search term for matching
+    // Normalize the text and search term for matching
+    const normalizedSearchTerm = searchTerm.replace(/\s+/g, ' ').trim();
     const normalizedText = text.replace(/\s+/g, ' ');
-    const normalizedSearchTerm = searchTerm.replace(/\s+/g, ' ');
 
-    // Escape special regex characters in the normalized search term
+    // Escape special regex characters
     const escapedSearchTerm = normalizedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    // Create a regex for the normalized search term
+    // Regex to find matches in normalized text
     const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
+    const matches = [...normalizedText.matchAll(regex)];
 
-    // Replace matches in the original text for highlighting while maintaining original structure
-    let highlighted = formatText(text);
-    const matchPositions = [...normalizedText.matchAll(regex)].map(match => {
-      const start = match.index;
+    if (matches.length === 0) {
+      setHighlightedText(formatText(text));
+      return;
+    }
+
+    // Highlight matches in the raw text
+    let highlighted = '';
+    let lastIndex = 0;
+    let matchOffset = 0;
+
+    matches.forEach((match) => {
+      const start = text.slice(matchOffset).search(new RegExp(escapedSearchTerm, 'i')) + matchOffset;
       const end = start + match[0].length;
-      return { start, end };
+
+      highlighted += text.slice(lastIndex, start);
+      highlighted += `<span class="highlight">${text.slice(start, end)}</span>`;
+      lastIndex = end;
+      matchOffset = end;
     });
 
-    if (matchPositions.length > 0) {
-      highlighted = ''; // Reset highlighted text
-      let cursor = 0;
-      for (const { start, end } of matchPositions) {
-        highlighted += text.slice(cursor, start);
-        highlighted += '<span class="highlight">' + text.slice(start, end) + '</span>';
-        cursor = end;
-      }
-      highlighted += text.slice(cursor);
+    highlighted += text.slice(lastIndex);
 
-      // Scroll to the first match and center it in the view
-      if (textContainerRef.current) {
-        const firstMatchIndex = matchPositions[0].start;
-        const precedingText = text.slice(0, firstMatchIndex);
-        const tempDiv = document.createElement('div');
-        tempDiv.style.visibility = 'hidden';
-        tempDiv.style.position = 'absolute';
-        tempDiv.style.whiteSpace = 'pre-wrap';
-        tempDiv.style.lineHeight = '1.5';
-        tempDiv.innerText = precedingText;
-        document.body.appendChild(tempDiv);
-        const offsetHeight = tempDiv.offsetHeight;
-        document.body.removeChild(tempDiv);
+    // Focus on the first match
+    if (textContainerRef.current) {
+      const tempDiv = document.createElement('div');
+      tempDiv.style.visibility = 'hidden';
+      tempDiv.style.position = 'absolute';
+      tempDiv.style.whiteSpace = 'pre-wrap';
+      tempDiv.style.lineHeight = '1.5';
+      tempDiv.innerText = text.slice(0, matches[0].index);
+      document.body.appendChild(tempDiv);
+      const offsetHeight = tempDiv.offsetHeight;
+      document.body.removeChild(tempDiv);
 
-        const container = textContainerRef.current;
-        container.scrollTop = offsetHeight - container.clientHeight / 2;
-      }
+      const container = textContainerRef.current;
+      container.scrollTop = offsetHeight - container.clientHeight / 2;
     }
 
     setHighlightedText(highlighted);
@@ -115,7 +117,6 @@ export default HighlightSearch;
 //   color: black;
 //   font-weight: bold;
 // }
-
 // .page-header {
 //   background-color: #f0f0f0;
 //   text-align: center;
