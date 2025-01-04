@@ -6,11 +6,21 @@ const HighlightSearch = () => {
   const [highlightedText, setHighlightedText] = useState('');
   const textContainerRef = useRef(null);
 
-  const text = `Here's\na     React component that renders a \n\n text section with paragraphs, spaces, and enters.`;
+  const text = `--{1}--Here's\na     React component that renders a \n\n text section with paragraphs, spaces, and enters. --{2}-- This amendment No. 5(“Amendment No 5”) is effective as of 01 jan`;
+
+  const formatText = (rawText) => {
+    // Replace page headers
+    const formattedText = rawText.replace(/--\{(\d+)\}--/g, (match, pageNo) => {
+      return `<div class='page-header'>Page ${pageNo}</div>`;
+    });
+
+    // Replace smart quotes with normal quotes
+    return formattedText.replace(/[“”]/g, '"');
+  };
 
   const handleSearch = () => {
     if (!searchTerm.trim()) {
-      setHighlightedText(text);
+      setHighlightedText(formatText(text));
       return;
     }
 
@@ -25,7 +35,7 @@ const HighlightSearch = () => {
     const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
 
     // Replace matches in the original text for highlighting while maintaining original structure
-    let highlighted = text;
+    let highlighted = formatText(text);
     const matchPositions = [...normalizedText.matchAll(regex)].map(match => {
       const start = match.index;
       const end = start + match[0].length;
@@ -33,7 +43,7 @@ const HighlightSearch = () => {
     });
 
     if (matchPositions.length > 0) {
-      highlighted = '';
+      highlighted = ''; // Reset highlighted text
       let cursor = 0;
       for (const { start, end } of matchPositions) {
         highlighted += text.slice(cursor, start);
@@ -91,7 +101,7 @@ const HighlightSearch = () => {
           maxHeight: '300px',
           overflowY: 'auto',
         }}
-        dangerouslySetInnerHTML={{ __html: highlightedText || text }}
+        dangerouslySetInnerHTML={{ __html: highlightedText || formatText(text) }}
       ></div>
     </div>
   );
@@ -104,4 +114,13 @@ export default HighlightSearch;
 //   background-color: yellow;
 //   color: black;
 //   font-weight: bold;
+// }
+
+// .page-header {
+//   background-color: #f0f0f0;
+//   text-align: center;
+//   padding: 0.5rem;
+//   margin: 1rem 0;
+//   font-weight: bold;
+//   border-radius: 5px;
 // }
