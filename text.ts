@@ -1,6 +1,10 @@
+
 const handleSearch = () => {
     if (!searchTerm.trim()) {
-      setHighlightedText(formatText(text));
+      setSearchTerm('');
+      if (textContainerRef.current) {
+        textContainerRef.current.innerHTML = formatText(rawText);
+      }
       return;
     }
 
@@ -8,39 +12,19 @@ const handleSearch = () => {
     const escapedSearchTerm = normalizedSearchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escapedSearchTerm})`, 'gi');
 
-    let highlighted = '';
-    let lastIndex = 0;
-    let firstMatchPosition: number | null = null;
+    const formattedText = formatText(rawText); // Ensure formatting is applied
+    const highlightedText = formattedText.replace(regex, (match) => `<span class="highlight">${match}</span>`);
 
-    text.replace(regex, (match, _, index) => {
-      if (firstMatchPosition === null) {
-        firstMatchPosition = index;
+    if (textContainerRef.current) {
+      textContainerRef.current.innerHTML = highlightedText;
+
+      // Scroll to the first match
+      const firstMatch = textContainerRef.current.querySelector('.highlight');
+      if (firstMatch && textContainerRef.current) {
+        const container = textContainerRef.current;
+        const containerHeight = container.clientHeight;
+        const elementTop = (firstMatch as HTMLElement).offsetTop - container.offsetTop;
+        container.scrollTop = elementTop - containerHeight / 2;
       }
-
-      highlighted += text.slice(lastIndex, index);
-      highlighted += `<span class="highlight">${match}</span>`;
-      lastIndex = index + match.length;
-
-      return match;
-    });
-
-    highlighted += text.slice(lastIndex);
-
-    setHighlightedText(highlighted || formatText(text));
-
-    if (firstMatchPosition !== null && textContainerRef.current) {
-      // Use DOM to scroll to the highlighted match
-      setTimeout(() => {
-        const container = textContainerRef.current as HTMLDivElement;
-        const highlightedElements = container.querySelectorAll('.highlight');
-        if (highlightedElements.length > 0) {
-          const firstMatchElement = highlightedElements[0] as HTMLElement;
-          const containerHeight = container.clientHeight;
-          const elementTop = firstMatchElement.offsetTop - container.offsetTop;
-
-          // Scroll the container
-          container.scrollTop = elementTop - containerHeight / 2;
-        }
-      }, 0);
     }
   };
