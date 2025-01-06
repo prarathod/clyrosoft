@@ -1,37 +1,36 @@
-import { useState } from "react";
+function replaceNumberPlaceholdersWithPageHeader(text) {
+  if (!text) return text; // Return original text if it's empty or undefined.
 
-const Toggle = () => {
-  const [isToggled, setIsToggled] = useState(false);
+  // Regular expression to find `{Number}` patterns.
+  const regex = /\{Number\}/g;
 
-  const handleToggle = () => {
-    setIsToggled(!isToggled);
-  };
-
-  return (
-    <div className="flex items-center">
-      <label htmlFor="toggle" className="mr-2 text-gray-700">
-        {isToggled ? "On" : "Off"}
-      </label>
-      <div
-        className={`relative inline-block w-12 h-6 transition duration-200 ease-in-out rounded-full ${
-          isToggled ? "bg-blue-500" : "bg-gray-400"
-        }`}
-      >
-        <input
-          id="toggle"
-          type="checkbox"
-          className="sr-only"
-          checked={isToggled}
-          onChange={handleToggle}
-        />
-        <span
-          className={`absolute top-0 left-0 inline-block w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-200 ease-in-out transform ${
-            isToggled ? "translate-x-6" : ""
-          }`}
-        ></span>
-      </div>
-    </div>
+  // Replace matches with the styled page header.
+  const replacedText = text.replace(
+    regex,
+    `<div style="background-color: #e5e7eb; text-align: center; padding: 10px; font-weight: bold; font-size: 1.5rem;">
+      Page Header
+    </div>`
   );
-};
 
-export default Toggle;
+  return replacedText;
+}
+
+// Example usage:
+const inputText = `
+Page 1
+CATALYST SUPPLYING CONTRACT
+FOR Tatoray#4 Process Unit
+
+{Number}
+
+CONTRACT NO: ZPCJ-LY-92
+----------------------------------------------
+
+Page 2
+SAFETY GUIDELINES FOR OPERATION
+
+{Number}
+`;
+
+const result = replaceNumberPlaceholdersWithPageHeader(inputText);
+console.log(result);
