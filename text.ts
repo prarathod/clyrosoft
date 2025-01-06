@@ -1,40 +1,99 @@
-function replaceNumberPlaceholderWithPageHeader(text) {
-  if (!text) return text; // Return original text if empty or undefined.
+import React, { Component, createRef } from "react";
 
-  // Regular expression to match --> {Number} <-- and extract the number.
-  const regex = /-->\s*{(\d+)}\s*<--/g;
-
-  // Replace matches with the styled page header.
-  const replacedText = text.replace(
-    regex,
-    (_, number) => `
-      <div style="background-color: #e5e7eb; text-align: center; padding: 10px; font-weight: bold; font-size: 1.5rem;">
-        Page No ${number}
-      </div>`
-  );
-
-  return replacedText;
-}
-
-// Example usage:
-const inputText = `
+class DocumentViewer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchTerm: "",
+      highlightedText: "",
+    };
+    this.firstMatchRef = createRef(); // Ref to scroll to the first match
+    this.originalText = `
 This is the start of the document.
+
+Some introduction content here.
 
 --> {1} <--
 
-Some content on Page 1.
+Content for Page 1.
+
+Some additional notes.
 
 --> {2} <--
 
-More content on Page 2.
+Content for Page 2.
 
---> {3} <--
+The document ends here.
+    `;
+  }
 
-End of the document.
-`;
+  // Function to handle search and highlight matches
+  handleSearch = () => {
+    const { searchTerm } = this.state;
+    if (!searchTerm.trim()) {
+      this.setState({ highlightedText: this.originalText }); // Reset to original if search term is empty
+      return;
+    }
 
-const result = replaceNumberPlaceholderWithPageHeader(inputText);
-console.log(result);
+    const regex = new RegExp(`(${searchTerm})`, "gi"); // Match the search term case-insensitively
+    const highlighted = this.originalText.replace(
+      regex,
+      (match) => `<span class="highlight">${match}</span>`
+    );
+
+    this.setState({ highlightedText: highlighted }, this.scrollToFirstMatch);
+  };
+
+  // Scroll to the first match
+  scrollToFirstMatch = () => {
+    if (this.firstMatchRef.current) {
+      this.firstMatchRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  // Update search term in state
+  handleInputChange = (event) => {
+    this.setState({ searchTerm: event.target.value });
+  };
+
+  render() {
+    const { searchTerm, highlightedText } = this.state;
+
+    return (
+      <div>
+        <h1>Document Viewer</h1>
+        <div>
+          <input
+            type="text"
+            placeholder="Search here..."
+            value={searchTerm}
+            onChange={this.handleInputChange}
+          />
+          <button onClick={this.handleSearch}>Search</button>
+        </div>
+        <div
+          dangerouslySetInnerHTML={{ __html: highlightedText || this.originalText }}
+          className="document-container"
+          ref={this.firstMatchRef}
+        />
+      </div>
+    );
+  }
+}
+
+export default DocumentViewer;
 
 
-<div dangerouslySetInnerHTML={{ __html: result }} />
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}
+.document-container {
+  white-space: pre-wrap; /* Preserve text formatting */
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 400px; /* Add a scrollable area */
+}
