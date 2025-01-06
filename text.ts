@@ -1,99 +1,46 @@
-import React, { Component, createRef } from "react";
+// Get the parent element
+const textView = document.querySelector('.text-view');
 
-class DocumentViewer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchTerm: "",
-      highlightedText: "",
-    };
-    this.firstMatchRef = createRef(); // Ref to scroll to the first match
-    this.originalText = `
-This is the start of the document.
+// Combine all the text inside the parent element
+function getCombinedText(element) {
+  return element.textContent;
+}
 
-Some introduction content here.
+// Calculate the offset relative to the combined text
+function getRelativeOffsets() {
+  const combinedText = getCombinedText(textView);
+  const selection = window.getSelection();
 
---> {1} <--
+  if (!selection.rangeCount) return null;
 
-Content for Page 1.
+  const range = selection.getRangeAt(0);
+  const preCaretRange = range.cloneRange();
 
-Some additional notes.
+  // Set the range to start from the start of the parent element
+  preCaretRange.selectNodeContents(textView);
+  preCaretRange.setEnd(range.startContainer, range.startOffset);
 
---> {2} <--
+  const startOffset = preCaretRange.toString().length;
 
-Content for Page 2.
+  const postCaretRange = range.cloneRange();
+  postCaretRange.selectNodeContents(textView);
+  postCaretRange.setEnd(range.endContainer, range.endOffset);
 
-The document ends here.
-    `;
+  const endOffset = postCaretRange.toString().length;
+
+  return {
+    combinedText,
+    startOffset,
+    endOffset,
+  };
+}
+
+// Usage
+document.addEventListener('mouseup', () => {
+  const offsets = getRelativeOffsets();
+  if (offsets) {
+    console.log('Combined Text:', offsets.combinedText);
+    console.log('Start Offset:', offsets.startOffset);
+    console.log('End Offset:', offsets.endOffset);
   }
-
-  // Function to handle search and highlight matches
-  handleSearch = () => {
-    const { searchTerm } = this.state;
-    if (!searchTerm.trim()) {
-      this.setState({ highlightedText: this.originalText }); // Reset to original if search term is empty
-      return;
-    }
-
-    const regex = new RegExp(`(${searchTerm})`, "gi"); // Match the search term case-insensitively
-    const highlighted = this.originalText.replace(
-      regex,
-      (match) => `<span class="highlight">${match}</span>`
-    );
-
-    this.setState({ highlightedText: highlighted }, this.scrollToFirstMatch);
-  };
-
-  // Scroll to the first match
-  scrollToFirstMatch = () => {
-    if (this.firstMatchRef.current) {
-      this.firstMatchRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  };
-
-  // Update search term in state
-  handleInputChange = (event) => {
-    this.setState({ searchTerm: event.target.value });
-  };
-
-  render() {
-    const { searchTerm, highlightedText } = this.state;
-
-    return (
-      <div>
-        <h1>Document Viewer</h1>
-        <div>
-          <input
-            type="text"
-            placeholder="Search here..."
-            value={searchTerm}
-            onChange={this.handleInputChange}
-          />
-          <button onClick={this.handleSearch}>Search</button>
-        </div>
-        <div
-          dangerouslySetInnerHTML={{ __html: highlightedText || this.originalText }}
-          className="document-container"
-          ref={this.firstMatchRef}
-        />
-      </div>
-    );
-  }
-}
-
-export default DocumentViewer;
-
-
-
-.highlight {
-  background-color: yellow;
-  font-weight: bold;
-}
-.document-container {
-  white-space: pre-wrap; /* Preserve text formatting */
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: auto;
-  max-height: 400px; /* Add a scrollable area */
-}
+});
