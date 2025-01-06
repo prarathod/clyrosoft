@@ -1,15 +1,16 @@
-function replaceNumberPlaceholdersWithPageHeader(text) {
-  if (!text) return text; // Return original text if it's empty or undefined.
+function replaceNumberPlaceholderWithPageHeader(text) {
+  if (!text) return text; // Return original text if empty or undefined.
 
-  // Regular expression to find `{Number}` patterns.
-  const regex = /\{Number\}/g;
+  // Regular expression to match --> {Number} <-- and extract the number.
+  const regex = /-->\s*{(\d+)}\s*<--/g;
 
   // Replace matches with the styled page header.
   const replacedText = text.replace(
     regex,
-    `<div style="background-color: #e5e7eb; text-align: center; padding: 10px; font-weight: bold; font-size: 1.5rem;">
-      Page Header
-    </div>`
+    (_, number) => `
+      <div style="background-color: #e5e7eb; text-align: center; padding: 10px; font-weight: bold; font-size: 1.5rem;">
+        Page No ${number}
+      </div>`
   );
 
   return replacedText;
@@ -17,20 +18,23 @@ function replaceNumberPlaceholdersWithPageHeader(text) {
 
 // Example usage:
 const inputText = `
-Page 1
-CATALYST SUPPLYING CONTRACT
-FOR Tatoray#4 Process Unit
+This is the start of the document.
 
-{Number}
+--> {1} <--
 
-CONTRACT NO: ZPCJ-LY-92
-----------------------------------------------
+Some content on Page 1.
 
-Page 2
-SAFETY GUIDELINES FOR OPERATION
+--> {2} <--
 
-{Number}
+More content on Page 2.
+
+--> {3} <--
+
+End of the document.
 `;
 
-const result = replaceNumberPlaceholdersWithPageHeader(inputText);
+const result = replaceNumberPlaceholderWithPageHeader(inputText);
 console.log(result);
+
+
+<div dangerouslySetInnerHTML={{ __html: result }} />
