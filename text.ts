@@ -30,12 +30,16 @@ The document ends here.
   // Function to handle search and highlight matches
   handleSearch = () => {
     const { searchTerm } = this.state;
+
     if (!searchTerm.trim()) {
       this.setState({ highlightedText: this.originalText }); // Reset to original if search term is empty
       return;
     }
 
-    const regex = new RegExp(`(${searchTerm})`, "gi"); // Match the search term case-insensitively
+    // Search pattern: --> {Number} <--
+    const regex = new RegExp(`-->\\s*\\{${searchTerm}\\}\\s*<--`, "g"); // Match the search term surrounded by --> { } <--
+
+    // Highlight the matched number in the document
     const highlighted = this.originalText.replace(
       regex,
       (match) => `<span class="highlight">${match}</span>`
@@ -64,8 +68,8 @@ The document ends here.
         <h1>Document Viewer</h1>
         <div>
           <input
-            type="text"
-            placeholder="Search here..."
+            type="number"
+            placeholder="Search Page Number..."
             value={searchTerm}
             onChange={this.handleInputChange}
           />
