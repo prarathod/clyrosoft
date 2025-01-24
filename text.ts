@@ -1,18 +1,60 @@
-WITH cleaned_data AS (
-  SELECT
-      cr."contractID",
-      jsonb_agg(element) AS updated_data
-  FROM "Contracts_Review" cr,
-       jsonb_array_elements(cr."JSONOutput"::jsonb) AS element
-  WHERE 
-      cr."date_of_insertion" = current_date
-      AND (
-          element->>'end' ~ '\\.'  -- Look for objects with "end" as a point value
-          AND element->>'end' IS NOT NULL
-      )
-  GROUP BY cr."contractID"
-)
-UPDATE "Contracts_Review" cr
-SET "JSONOutput" = cleaned_data.updated_data
-FROM cleaned_data
-WHERE cr."contractID" = cleaned_data."contractID";
+const _ = require("underscore");
+let knex = require("knex")({
+  client: "pg",
+  version: "7.2",
+  connection: {
+    user: "db-user-name",
+    host: "db-host-name",
+    database: "database-name",
+    password: "database-password",
+    port: 5432,
+    ssl: {
+      rejectUnauthorized: false,
+      ca: "",
+    },
+  },
+});
+
+async function getAllFields() {
+  try {
+    const data = await knex.raw(
+      `
+      SELECT DISTINCT "contractId", "JSONOutput", "data_of_insertion"
+      FROM "Contracs_Review",
+      jsonb_array_elements("JSONOutput"::jsonb) AS json_elements
+      WHERE json_elements->>'start' LIKE '%.%' 
+      AND "data_of_insertion" = current_date
+      `
+    );
+
+    console.log("Total distinct documents: ", data.rows);
+
+    const updatedData = data.rows.map(row => {
+      return {
+        ...row,
+        JSONOutput: updateJSONOutput(JSON.parse(row.JSONOutput))
+      };
+    });
+
+    console.log("Updated Data: ", updatedData);
+  } catch (err) {
+    console.log("An error occurred while fetching fields: ", err);
+  }
+}
+
+function updateJSONOutput(jsonArray) {
+  const seenTitles = new Set();
+  return jsonArray.filter(obj => {
+    if (seenTitles.has(obj.title) && isFloat(obj.start)) {
+      return false; // Remove duplicates with float "start" values
+    }
+    seenTitles.add(obj.title);
+    return true;
+  });
+}
+
+function isFloat(value) {
+  return Number(value) === value && value % 1 !== 0;
+}
+
+getAllFields().catch((err) => console.log("Error processing documents: ", err));
