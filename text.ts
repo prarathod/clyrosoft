@@ -1,46 +1,18 @@
-// Get the parent element
-const textView = document.querySelector('.text-view');
-
-// Combine all the text inside the parent element
-function getCombinedText(element) {
-  return element.textContent;
-}
-
-// Calculate the offset relative to the combined text
-function getRelativeOffsets() {
-  const combinedText = getCombinedText(textView);
-  const selection = window.getSelection();
-
-  if (!selection.rangeCount) return null;
-
-  const range = selection.getRangeAt(0);
-  const preCaretRange = range.cloneRange();
-
-  // Set the range to start from the start of the parent element
-  preCaretRange.selectNodeContents(textView);
-  preCaretRange.setEnd(range.startContainer, range.startOffset);
-
-  const startOffset = preCaretRange.toString().length;
-
-  const postCaretRange = range.cloneRange();
-  postCaretRange.selectNodeContents(textView);
-  postCaretRange.setEnd(range.endContainer, range.endOffset);
-
-  const endOffset = postCaretRange.toString().length;
-
-  return {
-    combinedText,
-    startOffset,
-    endOffset,
-  };
-}
-
-// Usage
-document.addEventListener('mouseup', () => {
-  const offsets = getRelativeOffsets();
-  if (offsets) {
-    console.log('Combined Text:', offsets.combinedText);
-    console.log('Start Offset:', offsets.startOffset);
-    console.log('End Offset:', offsets.endOffset);
-  }
-});
+WITH cleaned_data AS (
+  SELECT
+      cr."contractID",
+      jsonb_agg(element) AS updated_data
+  FROM "Contracts_Review" cr,
+       jsonb_array_elements(cr."JSONOutput"::jsonb) AS element
+  WHERE 
+      cr."date_of_insertion" = current_date
+      AND (
+          element->>'end' ~ '\\.'  -- Look for objects with "end" as a point value
+          AND element->>'end' IS NOT NULL
+      )
+  GROUP BY cr."contractID"
+)
+UPDATE "Contracts_Review" cr
+SET "JSONOutput" = cleaned_data.updated_data
+FROM cleaned_data
+WHERE cr."contractID" = cleaned_data."contractID";
