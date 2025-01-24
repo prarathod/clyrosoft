@@ -32,7 +32,7 @@ async function getAllFields() {
     const updatedData = data.rows.map(row => {
       return {
         ...row,
-        JSONOutput: updateJSONOutput(JSON.parse(row.JSONOutput))
+        JSONOutput: removeFloatStartObjects(JSON.parse(row.JSONOutput))
       };
     });
 
@@ -42,15 +42,8 @@ async function getAllFields() {
   }
 }
 
-function updateJSONOutput(jsonArray) {
-  const seenTitles = new Set();
-  return jsonArray.filter(obj => {
-    if (seenTitles.has(obj.title) && isFloat(obj.start)) {
-      return false; // Remove duplicates with float "start" values
-    }
-    seenTitles.add(obj.title);
-    return true;
-  });
+function removeFloatStartObjects(jsonArray) {
+  return jsonArray.filter(obj => !isFloat(obj.start));
 }
 
 function isFloat(value) {
