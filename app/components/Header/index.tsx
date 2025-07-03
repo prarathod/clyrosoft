@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import React, { useState, useRef } from "react";
 import { Layout, Menu, Drawer, Button } from "antd";
 import { MenuOutlined, CloseOutlined } from "@ant-design/icons";
 import Image from "next/image";
@@ -21,8 +20,6 @@ export const ClrHeader = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isSticky, setSticky] = useState(false);
   const headerRef = useRef(null);
 
   const toggleModal = () => setOpen((prev) => !prev);

@@ -1,76 +1,69 @@
 "use client";
 import React from "react";
-import { Typography, Row, Col, Card } from "antd";
-import { CodeOutlined, LayoutOutlined, TeamOutlined } from "@ant-design/icons";
+// import {  Card } from "antd";
+// import { CodeOutlined, LayoutOutlined, TeamOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { ClrButton } from "../Button/Base";
 import HeroSection2 from "./index2";
 
-const { Title, Paragraph } = Typography;
 
-const StyledSection = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
-  padding: 4rem 2rem;
-`;
+// const GradientText = styled.span`
+//   background: linear-gradient(90deg, #8b5cf6 0%, #ec4899 100%);
+//   -webkit-background-clip: text;
+//   background-clip: text;
+//   color: transparent;
+//   animation: pulse 2s infinite;
 
-const GradientText = styled.span`
-  background: linear-gradient(90deg, #8b5cf6 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: pulse 2s infinite;
+//   @keyframes pulse {
+//     0% {
+//       opacity: 1;
+//     }
+//     50% {
+//       opacity: 0.8;
+//     }
+//     100% {
+//       opacity: 1;
+//     }
+//   }
+// `;
 
-  @keyframes pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.8;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-`;
+// const HeroContainer = styled.div`
+//   text-align: center;
+//   margin-bottom: 4rem;
+//   transition: transform 0.3s ease;
 
-const HeroContainer = styled.div`
-  text-align: center;
-  margin-bottom: 4rem;
-  transition: transform 0.3s ease;
+//   &:hover {
+//     transform: scale(1.02);
+//   }
+// `;
 
-  &:hover {
-    transform: scale(1.02);
-  }
-`;
+// const StyledCard = styled(Card)`
+//   height: 100%;
+//   transition: all 0.3s ease;
+//   border-radius: 8px;
+//   overflow: hidden;
 
-const StyledCard = styled(Card)`
-  height: 100%;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  overflow: hidden;
+//   &:hover {
+//     transform: translateY(-5px);
+//     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+//     border-color: #8b5cf6;
+//   }
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-color: #8b5cf6;
-  }
+//   .ant-card-body {
+//     padding: 24px;
+//   }
 
-  .ant-card-body {
-    padding: 24px;
-  }
+//   .icon-wrapper {
+//     font-size: 2rem;
+//     margin-bottom: 1rem;
+//     transition: color 0.3s ease;
+//     color: #4096ff;
+//   }
 
-  .icon-wrapper {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    transition: color 0.3s ease;
-    color: #4096ff;
-  }
-
-  &:hover .icon-wrapper {
-    color: #8b5cf6;
-  }
-`;
+//   &:hover .icon-wrapper {
+//     color: #8b5cf6;
+//   }
+// `;
 
 const StyledButton = styled(ClrButton)`
   background: linear-gradient(90deg, #8b5cf6 0%, #ec4899 100%);
@@ -104,26 +97,26 @@ const StyledButton = styled(ClrButton)`
 `;
 
 const HeroSection = () => {
-  const features = [
-    {
-      icon: <CodeOutlined className="icon-wrapper" />,
-      title: "Modern Development",
-      description:
-        "We create scalable, responsive web applications using cutting-edge technologies and best practices.",
-    },
-    {
-      icon: <LayoutOutlined className="icon-wrapper" />,
-      title: "Custom Design",
-      description:
-        "Personalized designs that align with your brand, ensuring intuitive navigation and user experience.",
-    },
-    {
-      icon: <TeamOutlined className="icon-wrapper" />,
-      title: "Expert Team",
-      description:
-        "Our experienced developers deliver high-quality solutions that scale with your business needs.",
-    },
-  ];
+  // const features = [
+  //   {
+  //     icon: <CodeOutlined className="icon-wrapper" />,
+  //     title: "Modern Development",
+  //     description:
+  //       "We create scalable, responsive web applications using cutting-edge technologies and best practices.",
+  //   },
+  //   {
+  //     icon: <LayoutOutlined className="icon-wrapper" />,
+  //     title: "Custom Design",
+  //     description:
+  //       "Personalized designs that align with your brand, ensuring intuitive navigation and user experience.",
+  //   },
+  //   {
+  //     icon: <TeamOutlined className="icon-wrapper" />,
+  //     title: "Expert Team",
+  //     description:
+  //       "Our experienced developers deliver high-quality solutions that scale with your business needs.",
+  //   },
+  // ];
 
   return (
     <>
