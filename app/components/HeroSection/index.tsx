@@ -4,6 +4,7 @@ import { Typography, Row, Col, Card } from "antd";
 import { CodeOutlined, LayoutOutlined, TeamOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { ClrButton } from "../Button/Base";
+import HeroSection2 from "./index2";
 
 const { Title, Paragraph } = Typography;
 
@@ -125,10 +126,11 @@ const HeroSection = () => {
   ];
 
   return (
-    <StyledSection>
+    <>
+      <HeroSection2 />
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Hero Header */}
-        <HeroContainer>
+        {/* <HeroContainer>
           <Title level={1} style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>
             Web Apps that <GradientText>Make Sense</GradientText>
           </Title>
@@ -144,10 +146,10 @@ const HeroSection = () => {
             with powerful functionality. Created by industry professionals with
             years of experience.
           </Paragraph>
-        </HeroContainer>
+        </HeroContainer> */}
 
         {/* Features Grid */}
-        <Row gutter={[24, 24]} style={{ marginBottom: "4rem" }}>
+        {/* <Row gutter={[24, 24]} style={{ marginBottom: "4rem" }}>
           {features.map((feature, index) => (
             <Col key={index} xs={24} md={8}>
               <StyledCard>
@@ -161,7 +163,7 @@ const HeroSection = () => {
               </StyledCard>
             </Col>
           ))}
-        </Row>
+        </Row> */}
 
         {/* CTA Button */}
         <div style={{ textAlign: "center" }}>
@@ -170,7 +172,7 @@ const HeroSection = () => {
           </StyledButton>
         </div>
       </div>
-    </StyledSection>
+    </>
   );
 };
 
