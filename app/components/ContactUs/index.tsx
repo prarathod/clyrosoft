@@ -31,7 +31,7 @@ const ContactForm = () => {
     try {
       await sendEmail(values);
       message.success(
-        `Thank you ${values.fullName}} for your message! We will get back to you soon.`
+        `Thank you ${values.fullName} for your message! We will get back to you soon.`
       );
       form.resetFields();
     } catch {

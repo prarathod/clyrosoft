@@ -7,30 +7,22 @@ export const sendEmail = async ({
   company,
   email,
   message,
-}: ContactFormFieldTypes) => {
-  try {
-    const templateParams = {
-      from_name: fullName,
-      from_email: email,
-      company: company,
-      message: message,
-      to_name: "Clyrosoft Team !",
-      reply_to: "rockzzz0498@gmail.com",
-      logo: "/clr-logo.png",
-    };
+}: ContactFormFieldTypes): Promise<void> => {
+  const templateParams = {
+    from_name: fullName,
+    from_email: email,
+    company: company,
+    message: message,
+    to_name: "Clyrosoft Team",
+    reply_to: process.env.NEXT_PUBLIC_REPLY_TO_EMAIL || email,
+    logo: "/clr-logo.png",
+  };
 
-    await emailjs.send(
-      appConfig.serviceId || "",
-      appConfig.templateId || "",
-      templateParams,
-      appConfig.publicKey
-    );
-    return { success: true, message: "Email sent successfully!" };
-  } catch (error) {
-    console.error("Failed to send email:", error);
-    return {
-      success: false,
-      message: `Failed to send email`,
-    };
-  }
+  // Throws on failure — the caller's catch block will handle the error message.
+  await emailjs.send(
+    appConfig.serviceId || "",
+    appConfig.templateId || "",
+    templateParams,
+    appConfig.publicKey
+  );
 };

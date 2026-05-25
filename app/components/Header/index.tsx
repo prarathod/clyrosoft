@@ -13,7 +13,7 @@ const navigation = [
   { key: "services", label: "Services", href: "/services" },
   { key: "articles", label: "Articles", href: "/articles" },
   { key: "about-us", label: "About Us", href: "/about-us" },
-  { key: "contact-us", label: "Contact Us", href: "/contact" },
+  { key: "contact-us", label: "Contact Us", href: "/contact-us" },
 ];
 
 export const ClrHeader = () => {
